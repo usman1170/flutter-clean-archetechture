@@ -3,19 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:mvvm/resources/colors.dart';
 import 'package:mvvm/resources/round_button.dart';
-import 'package:mvvm/utils/routes.dart';
 import 'package:mvvm/view_models/auth_view_model.dart';
-import 'package:mvvm/views/auth/signup.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final ValueNotifier<bool> _obsPass = ValueNotifier<bool>(true);
@@ -34,10 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("login top build");
+    print("Sign Up top build");
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     return Scaffold(
-      body: authViewModel.isLoading
+      appBar: AppBar(
+        title: const Text("Sign Up"),
+      ),
+      body: authViewModel.signUpLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -80,34 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 16,
                   ),
                   _inputField(ispassword: true),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Routes().push(context, const SignUpScreen());
-                          },
-                          child: const Text(
-                            "Create account?",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "Forgot password?",
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   const SizedBox(
-                    height: 6,
+                    height: 36,
                   ),
                   BasicButton(
                     ontap: () async {
@@ -115,12 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         "email": _email.text.toString(),
                         "password": _password.text.toString()
                       };
-                      authViewModel.loginApi(data, context);
+                      authViewModel.signUpApi(data, context);
                     },
                     height: 55,
                     width: MediaQuery.of(context).size.width,
                     color: cyan,
-                    title: "Login",
+                    title: "Sign Up",
                   ),
                   const SizedBox(
                     height: 16,

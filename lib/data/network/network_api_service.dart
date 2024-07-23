@@ -15,8 +15,11 @@ class NetworkApiService extends BasicApiService {
           .get(
             Uri.parse(url),
           )
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 20));
+
       resJson = returnResponse(response);
+
+      print(response.statusCode);
       return resJson;
     } on SocketException {
       throw FetchDataException("No Internet Connection");
@@ -32,8 +35,9 @@ class NetworkApiService extends BasicApiService {
             Uri.parse(url),
             body: data,
           )
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 20));
       resJson = returnResponse(response);
+      print(response.statusCode);
       return resJson;
     } on SocketException {
       throw FetchDataException("No Internet Connection");
@@ -46,11 +50,11 @@ class NetworkApiService extends BasicApiService {
         dynamic jsonResponse = jsonDecode(response.body);
         return jsonResponse;
       case 400:
-        throw BadDataException("Bad request");
+        throw BadDataException(response.body.toString());
       case 401:
-        throw UnAuthDataException("UnAuthorized");
+        throw UnAuthDataException(response.body.toString());
       case 404:
-        throw DataNotFoundException("404 Not found");
+        throw DataNotFoundException(response.body.toString());
       default:
         throw FetchDataException(
             "Server communication Error with status code ${response.statusCode}");

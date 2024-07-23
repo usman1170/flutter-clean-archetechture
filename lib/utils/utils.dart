@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Utils {
-  static void showMassage(BuildContext context, String msg) {
+  static Future<void> showMassage(BuildContext context, String msg) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
